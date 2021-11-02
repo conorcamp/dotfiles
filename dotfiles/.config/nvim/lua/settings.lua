@@ -27,6 +27,8 @@ opt.ignorecase = true         -- ignore case letters when search
 opt.smartcase = true          -- ignore lowercase for the whole pattern
 opt.wrap = false              -- don't wrap lines
 opt.linebreak = true          -- wrap on word boundary
+opt.cursorline = true         -- highlight cursor line
+opt.showmode = false          -- remove mode info from statusline
 --opt.textwidth = 500           -- wrap at 500 chars
 
 -- remove whitespace on save
@@ -53,7 +55,7 @@ opt.synmaxcol = 240       -- max column for syntax highlight
 -----------------------------------------------------------
 opt.termguicolors = true      -- enable 24-bit RGB colors
 opt.background = 'dark'
-cmd [[colorscheme solarized]]
+vim.cmd('colorscheme solarized')
 
 -----------------------------------------------------------
 -- Tabs, indent

@@ -31,9 +31,6 @@ require("packer").startup({
     use({ "tpope/vim-fugitive", event = "User InGitRepo" })
 
 
-    -- Colorscheme
-    use 'ishan9299/nvim-solarized-lua'
-
     -- treesitter highlighting
     use {
       'nvim-treesitter/nvim-treesitter',
@@ -67,6 +64,14 @@ require("packer").startup({
     }
 
     use {
+      'kdheepak/tabline.nvim',
+      config = function()
+        require'tabline'.setup {enable = false}
+      end,
+      requires = {'hoob3rt/lualine.nvim', 'kyazdani42/nvim-web-devicons'}
+    }
+
+    use {
       'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true},
       config = [[require('config.lualine')]],
@@ -82,8 +87,42 @@ require("packer").startup({
       vim.api.nvim_set_keymap('n', "<C-\\>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateLastActive()<cr>", { noremap = true, silent = true })
       vim.api.nvim_set_keymap('n', "<C-Space>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateNext()<cr>", { noremap = true, silent = true })
     end
-}
+    }
 
+    -- Colorscheme
+    use 'ishan9299/nvim-solarized-lua'
+
+    -- git gutter
+    use {
+      'lewis6991/gitsigns.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim'
+      },
+      config = function()
+        require('gitsigns').setup {
+          signs = {
+            add          = {hl = 'GitSignsAdd'   , text = '+', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+            change       = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+            delete       = {hl = 'GitSignsDelete', text = '-', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+            topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+            changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+          },
+        }
+      end
+    }
+
+    use {
+      "lukas-reineke/indent-blankline.nvim",
+      config = function()
+        vim.opt.termguicolors = true
+        vim.cmd [[highlight IndentBlanklineIndent1 guifg=#073642 gui=nocombine]]
+        require("indent_blankline").setup {
+          space_char_blankline = " ",
+          char_highlight_list = {'IndentBlanklineIndent1'},
+          show_current_context = true,
+        }
+      end
+    }
 
   end,
   config = {
