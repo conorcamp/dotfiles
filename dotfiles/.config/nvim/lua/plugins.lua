@@ -20,53 +20,72 @@ if fn.glob(packer_install_dir) == "" then
   vim.cmd(install_cmd)
 end
 
--- Lad packer.nvim
+-- Load packer.nvim
 vim.cmd("packadd packer.nvim")
-bs = 16,
-    git = {
-      default_url_format = plug_url_format,
-    },
-  },
-})
-
 
 require("packer").startup({
   function(use)
     use({"wbthomason/packer.nvim", opt = true})
 
-    use {"onsails/lspkind-nvim", event = "BufEnter"}
-    -- auto-completion engine
-    use {"hrsh7th/nvim-cmp", after = "lspkind-nvim", config = [[require('config.nvim-cmp')]]}
-
-    -- nvim-cmp completion sources
-    use {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp"}
-
-    -- nvim-lsp configuration (it relies on cmp-nvim-lsp, so it should be loaded after cmp-nvim-lsp).
-    use({ "neovim/nvim-lspconfig", after = "cmp-nvim-lsp", config = [[require('config.lsp')]] })
-
-    use {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp"}
-    use {"hrsh7th/cmp-path", after = "nvim-cmp"}
-    use {"hrsh7th/cmp-buffer", after = "nvim-cmp"}
-
-    if vim.g.is_mac then
-      use({ "nvim-treesitter/nvim-treesitter", event = 'BufEnter', run = ":TSUpdate", config = [[require('config.treesitter')]] })
-    end
-
-    use {
-      'nvim-telescope/telescope.nvim',
-      requires = { {'nvim-lua/plenary.nvim'} }
-    }
-
-    -- Show git change (change, delete, add) signs in vim sign column
-    use({"mhinz/vim-signify", event = 'BufEnter'})
-
-    -- colorful status line and theme
-    use({"vim-airline/vim-airline-themes", after = 'vim-signify',})
-    use({"vim-airline/vim-airline", after = 'vim-airline-themes',})
-
     -- Git command inside vim
     use({ "tpope/vim-fugitive", event = "User InGitRepo" })
 
+
+    -- Colorscheme
+    use 'ishan9299/nvim-solarized-lua'
+
+    -- treesitter highlighting
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      requires = {
+        'nvim-treesitter/nvim-treesitter-refactor',
+        'nvim-treesitter/nvim-treesitter-textobjects',
+      },
+      run = ':TSUpdate',
+    }
+    -- fallback syntax highlighting
+    use 'sheerun/vim-polyglot'
+
+
+    -- lsp
+    use 'neovim/nvim-lspconfig'
+    use 'nvim-lua/completion-nvim'
+    use 'anott03/nvim-lspinstall'
+
+
+    -- Completion
+    use {
+      'hrsh7th/nvim-cmp',
+      requires = {
+        { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+        'hrsh7th/cmp-nvim-lsp',
+        { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+        { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
+      },
+      --config = [[require('config.cmp')]],
+      event = 'InsertEnter *',
+    }
+
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', opt = true},
+      config = [[require('config.lualine')]],
+    }
+
+
+    -- tmux navigation
+    use { 'alexghergh/nvim-tmux-navigation', config = function()
+      vim.api.nvim_set_keymap('n', "<C-h>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateLeft()<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', "<C-j>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateDown()<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', "<C-k>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateUp()<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', "<C-l>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateRight()<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', "<C-\\>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateLastActive()<cr>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', "<C-Space>", ":lua require'nvim-tmux-navigation'.NvimTmuxNavigateNext()<cr>", { noremap = true, silent = true })
+    end
+}
+
+
+  end,
   config = {
     max_jobs = 16,
     git = {
@@ -74,4 +93,3 @@ require("packer").startup({
     },
   },
 })
-

@@ -53,7 +53,7 @@ opt.synmaxcol = 240       -- max column for syntax highlight
 -----------------------------------------------------------
 opt.termguicolors = true      -- enable 24-bit RGB colors
 opt.background = 'dark'
---cmd [[colorscheme solarized8]]
+cmd [[colorscheme solarized]]
 
 -----------------------------------------------------------
 -- Tabs, indent

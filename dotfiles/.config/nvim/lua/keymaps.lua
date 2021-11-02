@@ -34,7 +34,7 @@ map {'n', '<C-left>', ':call Resize("<")<CR>'}
 map {'n', '<C-Right>', ':call Resize(">")<CR>'}
 
 -- return to remove last search highlighting
-map {'n', '<CR>', ':noh<CR><CR>', noremap = false}
+map {'n', '<CR>', ':noh<CR><CR>'}
 
 -- 0 to first nonblank char of line
 -- ^ to hard beginning of line
