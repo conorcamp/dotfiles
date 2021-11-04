@@ -21,17 +21,18 @@ map {'i', '<Down>', '<C-o>g<Down>'}
 map {'i', '<Up>', '<C-o>g<Up>'}
 
 -- copy to system clipboard
-map {'v', '<Leader>y', 'system("pbcopy", getreg("\""))<CR>'}
+map {'v', '<Leader>y', 'y:call system("pbcopy", getreg(\'"\'))<CR>'}
 
 -- paste form system clipboard
-map {'n', '<Leader>p', ':call setreg("\"",system("pbpaste"))<CR>p'}
-map {'n', '<Leader>P', ':call setreg("\"",system("pbpaste"))<CR>P'}
+map {'n', '<Leader>p', ':call setreg(\'"\',system("pbpaste"))<CR>p'}
+map {'n', '<Leader>P', ':call setreg(\'"\',system("pbpaste"))<CR>P'}
 
 -- window sizing
-map {'n', '<C-Up>', ':call Resize("+")<CR>'}
-map {'n', '<C-Down>', ':call Resize("-")<CR>'}
-map {'n', '<C-left>', ':call Resize("<")<CR>'}
-map {'n', '<C-Right>', ':call Resize(">")<CR>'}
+-- calls vim function from autoload
+map {'n', '<C-Up>', ':call tools#resizeSplit("+")<CR>'}
+map {'n', '<C-Down>', ':call tools#resizeSplit("-")<CR>'}
+map {'n', '<C-left>', ':call tools#resizeSplit("<")<CR>'}
+map {'n', '<C-Right>', ':call tools#resizeSplit(">")<CR>'}
 
 -- return to remove last search highlighting
 map {'n', '<CR>', ':noh<CR><CR>'}
