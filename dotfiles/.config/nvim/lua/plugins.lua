@@ -32,10 +32,22 @@ require('packer').startup({
 
     -- lsp
     use({
-      'williamboman/nvim-lsp-installer',
       'neovim/nvim-lspconfig',
-      'onsails/lspkind-nvim',
-      'folke/lsp-colors.nvim',
+      config = function()
+        require('config.lsp')
+        return {}
+      end,
+      requires = {
+        'williamboman/nvim-lsp-installer',
+        'onsails/lspkind-nvim',
+        'folke/lsp-colors.nvim',
+      },
+    })
+
+    use({
+      'folke/trouble.nvim',
+      requires = 'kyazdani42/nvim-web-devicons',
+      config = [[require('config.trouble')]],
     })
 
     -- treesitter highlighting
@@ -53,7 +65,21 @@ require('packer').startup({
 
     -- Git
     use({
-      { 'tpope/vim-fugitive', cmd = { 'Git', 'Gstatus', 'Gblame', 'Gpush', 'Gpull' } },
+      {
+        'tpope/vim-fugitive',
+        cmd = {
+          'Git',
+          'Gstatus',
+          'Gblame',
+          'Gpush',
+          'Gpull',
+          'Gwrite',
+          'Gcommit',
+          'G*',
+        },
+        config = [[require('config.vim-fugitive')]],
+        requires = {'tpope/vim-rhubarb'},
+      },
       {
         'lewis6991/gitsigns.nvim', --git gutter
         requires = {
@@ -173,17 +199,17 @@ require('packer').startup({
     use({
       'ishan9299/nvim-solarized-lua',
       config = function()
-        vim.cmd([[highlight TSParameter guifg=#839496 guibg=NONE gui=NONE cterm=NONE]])
-        vim.cmd([[highlight TSVariable guifg=#839496 guibg=NONE gui=NONE cterm=NONE]])
-        vim.cmd(
-          [[highlight TSVariableBuiltin guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
-        )
-        vim.cmd(
-          [[highlight TSPunctBracket guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
-        )
-        vim.cmd(
-          [[highlight TSPunctDelimiter guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
-        )
+        --vim.cmd([[highlight TSParameter guifg=#839496 guibg=NONE gui=NONE cterm=NONE]])
+        --vim.cmd([[highlight TSVariable guifg=#839496 guibg=NONE gui=NONE cterm=NONE]])
+        --vim.cmd(
+        --  [[highlight TSVariableBuiltin guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
+        --)
+        --vim.cmd(
+        --  [[highlight TSPunctBracket guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
+        --)
+        --vim.cmd(
+        --  [[highlight TSPunctDelimiter guifg=#839496 guibg=NONE gui=NONE cterm=NONE]]
+        --)
       end,
     })
     use('chumakd/NeoSolarized')

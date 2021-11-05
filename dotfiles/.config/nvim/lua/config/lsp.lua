@@ -22,7 +22,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<C-K>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   buf_set_keymap(
     'n',
     '<space>wa',
@@ -63,13 +63,16 @@ local function install_servers(servers)
   end
 end
 
-local function setup_servers(setups, default_opts)
+local function setup_servers(servers, default_opts)
   -- Setup all servers installed via nvim-lsp-installer
   lsp_installer.on_server_ready(function(server)
-    local opts = utils.merge_tables(setups[server.name] or {}, default_opts)
+    local opts = vim.tbl_deep_extend("force", default_opts, servers[server.name] or {})
+    --local opts = utils.merge_tables(setups[server.name] or {}, default_opts)
     server:setup(opts)
     vim.cmd([[ do User LspAttachBuffers ]])
   end)
+
+  install_servers(servers)
 end
 
 local lsp_default_opts = {
@@ -79,7 +82,7 @@ local lsp_default_opts = {
   },
 }
 
-local setups = {
+local servers = {
   efm = require('lsp.efm'),
   sumneko_lua = require('lsp.lua'),
   graphql = {},
@@ -89,4 +92,4 @@ local setups = {
   jsonls = {},
 }
 
-setup_servers(setups, lsp_default_opts)
+setup_servers(servers, lsp_default_opts)
